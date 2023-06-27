@@ -17,3 +17,15 @@ robotiq_3f_gripper:
       - finger_middle_joint_1
       - finger_middle_joint_2
       - finger_middle_joint_3
+  gazebo_ros_control/pid_gains: 
+    palm_finger_1_joint: {p: 1.0, i: 0.0, d: 1.0}
+    finger_1_joint_1: {p: 1.0, i: 0.0, d: 1.0}
+    finger_1_joint_2: {p: 1.0, i: 0.0, d: 1.0}
+    finger_1_joint_3: {p: 1.0, i: 0.0, d: 1.0}
+    palm_finger_2_joint: {p: 1.0, i: 0.0, d: 1.0}
+    finger_2_joint_1: {p: 1.0, i: 0.0, d: 1.0}
+    finger_2_joint_2: {p: 1.0, i: 0.0, d: 1.0}
+    finger_2_joint_3: {p: 1.0, i: 0.0, d: 1.0}
+    finger_middle_joint_1: {p: 1.0, i: 0.0, d: 1.0}
+    finger_middle_joint_2: {p: 1.0, i: 0.0, d: 1.0}
+    finger_middle_joint_3: {p: 1.0, i: 0.0, d: 1.0}

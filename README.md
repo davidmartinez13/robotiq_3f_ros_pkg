@@ -47,6 +47,10 @@ $ roslaunch robotiq_3f_driver listener.launch ip_address:=192.168.1.11
 ```
 then, ROS services and gripper will be activated.
 
+spawn in gazebo:
+```
+roslaunch robotiq_3f_gazebo spawn_robotiq_3f_gripper.launch
+```
 ## CI
 See [here](https://github.com/Nishida-Lab/denso_docs/tree/master/ci) for detail decumentation.
 
