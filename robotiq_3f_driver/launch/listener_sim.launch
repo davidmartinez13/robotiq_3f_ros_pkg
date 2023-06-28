@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="robotiq_3f_driver" type="listener.py" name="Robotiq3FGripperListener" />
+  <node pkg="robotiq_3f_driver" type="activate.py" name="Robotiq3FGripperActivate" />
+</launch>

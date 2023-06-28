@@ -19,7 +19,7 @@ from driver import Robotic3fGripperDriver
 from time import sleep
 
 class Robotic3fGripperListener(object):
-    def __init__(self):
+    def __init__(self, is_sim = True):
         self.gripper = Robotic3fGripperDriver()
         self._activate_service = rospy.Service('/robotiq_3f_gripper/activate', Activate, self.activate)
         self._reset_service = rospy.Service('/robotiq_3f_gripper/reset', Reset, self.reset)
@@ -34,13 +34,15 @@ class Robotic3fGripperListener(object):
         self._get_speed_service = rospy.Service('/robotiq_3f_gripper/get_speed', GetSpeed, self.get_speed)
         self._get_torque_service = rospy.Service('/robotiq_3f_gripper/get_torque', GetTorque, self.get_torque)
         rospy.loginfo("Ready to Robotic 3f Gripper services")
+        self.is_sim = is_sim
 
     def activate(self, req):
         ret = ActivateResponse()
         self.gripper.activate()
         sleep(1)
-        while self.gripper._gripper_status.gIMC != 3:
-            pass
+        if not self.is_sim:
+            while self.gripper._gripper_status.gIMC != 3:
+                pass
         ret.success = True
         return ret
 
@@ -52,81 +54,93 @@ class Robotic3fGripperListener(object):
 
     def open_hand(self, req):
         ret = MoveResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         self.gripper.open_hand()
         sleep(1)
-        while True:
-            if self.gripper._gripper_status.gGTO == 1 and \
-               self.gripper._gripper_status.gSTA != 0:
-                break
+        if not self.is_sim:
+            while True:
+                if self.gripper._gripper_status.gGTO == 1 and \
+                self.gripper._gripper_status.gSTA != 0:
+                    break
         ret.success = True
         return ret
 
     def close_hand(self, req):
         ret = MoveResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         self.gripper.close_hand()
         sleep(1)
-        while True:
-            if self.gripper._gripper_status.gGTO == 1 and \
-               self.gripper._gripper_status.gSTA != 0:
-                break
+        if not self.is_sim:
+            while True:
+                if self.gripper._gripper_status.gGTO == 1 and \
+                self.gripper._gripper_status.gSTA != 0:
+                    break
         ret.success = True
         return ret
 
     def set_mode(self, req):
         ret = SetModeResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         self.gripper.set_mode(req.mode)
         sleep(1)
-        while self.gripper._gripper_status.gIMC != 3:
-            pass
+
+        if not self.is_sim:
+            while self.gripper._gripper_status.gIMC != 3:
+                pass
         ret.success = True
         return ret
 
     def set_position(self, req):
         ret = SetPositionResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         self.gripper.set_position(req.position)
         sleep(1)
-        while True:
-            if self.gripper._gripper_status.gGTO == 1 and \
-               self.gripper._gripper_status.gSTA != 0:
-                break
+        if not self.is_sim:
+            while True:
+                if self.gripper._gripper_status.gGTO == 1 and \
+                self.gripper._gripper_status.gSTA != 0:
+                    break
         ret.success = True
         return ret
 
     def set_speed(self, req):
         ret = SetSpeedResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         self.gripper.set_speed(req.speed)
         ret.success = True
         return ret
 
     def set_torque(self, req):
         ret = SetTorqueResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         self.gripper.set_torque(req.torque)
         ret.success = True
         return ret
 
     def get_mode(self, req):
         ret = GetModeResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         ret.mode = self.gripper.get_mode()
         if ret.mode:
             ret.success = True
@@ -136,9 +150,10 @@ class Robotic3fGripperListener(object):
 
     def get_position(self, req):
         ret = GetPositionResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         ret.target_position = self.gripper.get_position_target()
         ret.finger_a_position = self.gripper.get_position_a()
         ret.finger_b_position = self.gripper.get_position_b()
@@ -152,18 +167,20 @@ class Robotic3fGripperListener(object):
 
     def get_speed(self, req):
         ret = GetSpeedResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         ret.speed = self.gripper.get_speed()
         ret.success = True
         return ret
 
     def get_torque(self, req):
         ret = GetTorqueResponse()
-        if not self.gripper._is_activated():
-            ret.success = False
-            return ret
+        if not self.is_sim:
+            if not self.gripper._is_activated():
+                ret.success = False
+                return ret
         ret.torque = self.gripper.get_torque()
         ret.success = True
         return ret
