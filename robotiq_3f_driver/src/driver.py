@@ -2,8 +2,8 @@
 
 import rospy
 
-from robotiq_3f_gripper_control.msg import _Robotiq3FGripper_robot_input as inputMsg
-from robotiq_3f_gripper_control.msg import _Robotiq3FGripper_robot_output as outputMsg
+from robotiq_3f_gripper_articulated_msgs.msg import Robotiq3FGripperRobotInput as inputMsg
+from robotiq_3f_gripper_articulated_msgs.msg import Robotiq3FGripperRobotOutput as outputMsg
 
 from time import sleep
 
@@ -13,10 +13,10 @@ from time import sleep
 
 class Robotic3fGripperDriver(object):
     def __init__(self):
-        self._command_pub = rospy.Publisher('Robotiq3FGripperRobotOutput', outputMsg.Robotiq3FGripper_robot_output, queue_size=1)
-        rospy.Subscriber("Robotiq3FGripperRobotInput", inputMsg.Robotiq3FGripper_robot_input, self._gripper_status_callback, queue_size=1)
-        self._gripper_status = inputMsg.Robotiq3FGripper_robot_input()
-        self._command = outputMsg.Robotiq3FGripper_robot_output()
+        self._command_pub = rospy.Publisher('Robotiq3FGripperRobotOutput', outputMsg, queue_size=1)
+        rospy.Subscriber("Robotiq3FGripperRobotInput", inputMsg, self._gripper_status_callback, queue_size=1)
+        self._gripper_status = inputMsg()
+        self._command = outputMsg()
         self._timeout = 30
 
     def _gripper_status_callback(self, msg):
@@ -31,12 +31,12 @@ class Robotic3fGripperDriver(object):
             return True
 
     def reset(self):
-        self._command = outputMsg.Robotiq3FGripper_robot_output()
+        self._command = outputMsg()
         self._command.rACT = 0
         self._command_pub.publish(self._command)
 
     def activate(self):
-        self._command = outputMsg.Robotiq3FGripper_robot_output()
+        self._command = outputMsg()
         self._command.rACT = 1
         self._command.rGTO = 1
         self._command.rSPA = 255
