@@ -13,7 +13,16 @@
   <depend>sensor_msgs</depend>
 
   <exec_depend>robotiq_3f_gripper_joint_state_publisher</exec_depend>
-
+  <build_depend>controller_manager</build_depend>
+  <build_depend>joint_state_controller</build_depend>
+  <build_depend>robot_state_publisher</build_depend>
+  <build_export_depend>controller_manager</build_export_depend>
+  <build_export_depend>joint_state_controller</build_export_depend>
+  <build_export_depend>robot_state_publisher</build_export_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_state_controller</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
   <test_depend>roslaunch</test_depend>
+
 
 </package>
