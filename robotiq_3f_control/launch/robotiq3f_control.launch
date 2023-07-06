@@ -20,42 +20,30 @@
   </group>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <group if="$(arg attached)"> 
+  <!-- <group if="$(arg attached)"> 
     <rosparam file="$(find robotiq_3f_control)/config/robotiq3f_control_attached.yaml" command="load"
         ns="$(arg robot_name)"/>
 
     <node name="robotiq3f_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
       output="screen" ns="$(arg robot_name)" args="finger_1_joint_1_position_controller
-                                                  finger_1_joint_2_position_controller
-                                                  finger_1_joint_3_position_controller
                                                   palm_finger_1_joint_position_controller
                                                   finger_2_joint_1_position_controller
-                                                  finger_2_joint_2_position_controller
-                                                  finger_2_joint_3_position_controller
                                                   palm_finger_2_joint_position_controller
-                                                  finger_middle_joint_1_position_controller
-                                                  finger_middle_joint_2_position_controller
-                                                  finger_middle_joint_3_position_controller"/>
+                                                  finger_middle_joint_1_position_controller"/>
   </group>
 
-  <!-- <group unless="$(arg attached)"> 
+  <group unless="$(arg attached)"> 
     <rosparam file="$(find robotiq_3f_control)/config/robotiq3f_control.yaml" command="load"/>
 
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-      output="screen" ns="/hithand" args="joint_state_controller 
-                                          finger_1_joint_2_position_controller
-                                          finger_1_joint_3_position_controller
-                                          palm_finger_1_joint_position_controller
-                                          finger_2_joint_1_position_controller
-                                          finger_2_joint_2_position_controller
-                                          finger_2_joint_3_position_controller
-                                          palm_finger_2_joint_position_controller
-                                          finger_middle_joint_1_position_controller
-                                          finger_middle_joint_2_position_controller
-                                          finger_middle_joint_3_position_controller"/>
+      output="screen" ns="/robotiq3f" args="finger_1_joint_1_position_controller
+                                                  palm_finger_1_joint_position_controller
+                                                  finger_2_joint_1_position_controller
+                                                  palm_finger_2_joint_position_controller
+                                                  finger_middle_joint_1_position_controller"/>
   </group> -->
 
-  <group if="$(arg attached)"> 
+  <!-- <group if="$(arg attached)"> 
         Split joint commands to publish to individual joint effort controllers
       <node name="robotiq3f_joint_wrapper" pkg="panda_gazebo" type="robot_joint_wrapper.py"
       respawn="false" output="screen">
@@ -65,10 +53,18 @@
         <param name="joint_command_topic" type="str" value="$(arg joint_command_topic)"/>
         <param name="control_rate"        type="int" value="$(arg control_rate)"/>
       </node>
-  </group>
+  </group> -->
 
   <!-- convert joint states to TF transforms for rviz, etc -->
-  <group unless="$(arg attached)"> <!-- Only needed if hand is not attached -->
+  <!-- Only needed if hand is not attached -->
+  <!-- <group unless="$(arg attached)"> 
+    <node name="robotiq_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="true" output="screen">
+        <remap from="/joint_states" to="/robotiq3f/joint_states" />
+    </node>
+  </group> -->
+  
+  <group if="$(arg attached)"> 
     <node name="robotiq_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
         respawn="true" output="screen">
         <remap from="/joint_states" to="/robotiq3f/joint_states" />
