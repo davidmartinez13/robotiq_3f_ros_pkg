@@ -10,6 +10,7 @@ if __name__ == '__main__':
     try:
         activate = rospy.ServiceProxy('/robotiq_3f_gripper/activate', Activate)
         ret = activate()
+        # rospy.sleep(1)
         rospy.loginfo('robotiq 3f gripper activation complete.')
     except rospy.ServiceException as e:
         rospy.logerr('Activation service failed:{}'.format(e))

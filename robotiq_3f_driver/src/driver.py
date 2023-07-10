@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-
+import roslib;
+roslib.load_manifest('robotiq_3f_gripper_control')
 from robotiq_3f_gripper_articulated_msgs.msg import Robotiq3FGripperRobotInput as inputMsg
 from robotiq_3f_gripper_articulated_msgs.msg import Robotiq3FGripperRobotOutput as outputMsg
 
@@ -98,46 +99,58 @@ class Robotic3fGripperDriver(object):
             return 'wide'
         elif mode == 3:
             return 'scissor'
-
+    # TODO: fix pos request not updating
     def get_position_target(self):
+        return int(self._gripper_status.gPRA)
+        sleep(0.5)
         # status: go to position request
-        if self._gripper_status.gGTO == 1:
-            count = 0
-            while count < self._timeout:
-                # status: gripper is stopped
-                if self._gripper_status.gSTA != 0:
-                    return self._gripper_status.gPRA
-                sleep(0.1)
+        # if self._gripper_status.gGTO == 1:
+        #     count = 0
+        #     while count < self._timeout:
+        #         # status: gripper is stopped
+        #         if self._gripper_status.gSTA != 0:
+        #             return self._gripper_status.gPRA
+        #         sleep(0.1)
+        #         count += 1
 
     def get_position_a(self):
+        return int(self._gripper_status.gPOA)
+        sleep(0.5)
         # status: go to position request
-        if self._gripper_status.gGTO == 1:
-            count = 0
-            while count < self._timeout:
-                # status: gripper is stopped
-                if self._gripper_status.gSTA != 0:
-                    return self._gripper_status.gPOA
-                sleep(0.1)
+        # if self._gripper_status.gGTO == 1:
+        #     count = 0
+        #     while count < self._timeout:
+        #         # status: gripper is stopped
+        #         if self._gripper_status.gSTA != 0:
+        #             return self._gripper_status.gPOA
+        #         sleep(0.1)
+        #         count += 1
 
     def get_position_b(self):
+        return int(self._gripper_status.gPOB)
+        sleep(0.5)
         # status: go to position request
-        if self._gripper_status.gGTO == 1:
-            count = 0
-            while count < self._timeout:
-                # status: gripper is stopped
-                if self._gripper_status.gSTA != 0:
-                    return self._gripper_status.gPOB
-                sleep(0.1)
+        # if self._gripper_status.gGTO == 1:
+        #     count = 0
+        #     while count < self._timeout:
+        #         # status: gripper is stopped
+        #         if self._gripper_status.gSTA != 0:
+        #             return self._gripper_status.gPOB
+        #         sleep(0.1)
+        #         count += 1
 
     def get_position_c(self):
+        return int(self._gripper_status.gPOC)
+        sleep(0.5)
         # status: go to position request
-        if self._gripper_status.gGTO == 1:
-            count = 0
-            while count < self._timeout:
-                # status: gripper is stopped
-                if self._gripper_status.gSTA != 0:
-                    return self._gripper_status.gPOC
-                sleep(0.1)
+        # if self._gripper_status.gGTO == 1:
+        #     count = 0
+        #     while count < self._timeout:
+        #         # status: gripper is stopped
+        #         if self._gripper_status.gSTA != 0:
+        #             return self._gripper_status.gPOC
+        #         sleep(0.1)
+        #         count += 1
 
     def get_speed(self):
         return self._command.rSPA
